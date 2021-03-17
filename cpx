@@ -74,13 +74,29 @@ function getComposerBinPathFor($bin) {
     return $path;
 }
 
+function packageIsInstalledGlobally($package) {
+    $response = Terminal::run("composer global show {$package}");
+
+    return $response->successful();
+}
+
+function removePackage($package) {
+    Terminal::run("composer global remove {$package} --quiet");
+}
+
 $packageName = getArguments(0);
 
-$installCommand = "composer global require {$packageName} --quiet";
+$shouldRemovePackageUponCompletion = false;
 
-$response = Terminal::run($installCommand);
+if (! packageIsInstalledGlobally($packageName)) {
+    $installCommand = "composer global require {$packageName} --quiet";
 
-$response->throw();
+    $response = Terminal::run($installCommand);
+
+    $response->throw();
+
+    $shouldRemovePackageUponCompletion = true;
+}
 
 $json = getComposerJsonFor($packageName);
 
@@ -108,13 +124,15 @@ $response = Terminal::tty(true)->run($command);
 try {
     $response->throw();
 } catch (\Throwable $e) {
-    Terminal::run("composer global remove {$packageName} --quiet");
+    if ($shouldRemovePackageUponCompletion) {
+        removePackage($packageName);
+    }
 
     throw $e;
 }
 
 print $response->output();
 
-Terminal::run("composer global remove {$packageName} --quiet");
-
-
+if ($shouldRemovePackageUponCompletion) {
+    removePackage($packageName);
+}
