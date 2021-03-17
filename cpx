@@ -74,7 +74,7 @@ function getComposerBinPathFor($bin) {
     return $path;
 }
 
-function packageIsInstalledGlobally($package) {
+function isInstalledGlobally($package) {
     $response = Terminal::run("composer global show {$package}");
 
     return $response->successful();
@@ -88,7 +88,7 @@ $packageName = getArguments(0);
 
 $shouldRemovePackageUponCompletion = false;
 
-if (! packageIsInstalledGlobally($packageName)) {
+if (! isInstalledGlobally($packageName)) {
     $installCommand = "composer global require {$packageName} --quiet";
 
     $response = Terminal::run($installCommand);
