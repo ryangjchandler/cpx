@@ -15,5 +15,9 @@
             "homepage": "https://danharrin.com",
             "role": "Developer"
         }
-    ]
+    ],
+    "require": {
+        "composer/composer": "^2.0",
+        "titasgailius/terminal": "^1.0"
+    }
 }

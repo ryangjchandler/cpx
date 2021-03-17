@@ -1,0 +1,120 @@
+#!/usr/bin/env php
+<?php
+
+use TitasGailius\Terminal\Terminal;
+
+require_once __DIR__.'/vendor/autoload.php';
+
+function findComposer() {
+    $composerPath = getcwd().'/composer.phar';
+
+    if (file_exists($composerPath)) {
+        return '"'.PHP_BINARY.'" '.$composerPath;
+    }
+
+    return 'composer';
+}
+
+function getArguments($index = null) {
+    global $argv;
+
+    $args = $argv;
+
+    array_shift($args);
+
+    return $index !== null ? $args[$index] : $args;
+}
+
+function findComposerDirectory() {
+    $response = Terminal::run('composer config --list --global');
+
+    preg_match('/\[home\](.*)/', $response->output(), $matches);
+
+    if (count($matches) < 2) {
+        throw new Exception('Could not find Composer\'s global directory.');
+    }
+
+    return trim($matches[1]);
+}
+
+function getComposerJsonFor($package) {
+    $composerDir = findComposerDirectory();
+
+    if (! is_dir($composerDir.'/vendor')) {
+        throw new Exception('Composer does not have any global packages installed.');
+    }
+
+    $file = implode('', [
+        $composerDir,
+        '/vendor/',
+        $package,
+        '/composer.json'
+    ]);
+
+    return json_decode(file_get_contents($file), true);
+}
+
+function getComposerBinPathFor($bin) {
+    $composerDir = findComposerDirectory();
+
+    if (! is_dir($composerDir.'/vendor')) {
+        throw new Exception('Composer does not have any global packages installed.');
+    }
+
+    $path = implode('', [
+        $composerDir,
+        '/vendor/bin/',
+        $bin,
+    ]);
+
+    if (! is_executable($path)) {
+        throw new Exception('Binary '.$bin.' is not executable.');
+    }
+
+    return $path;
+}
+
+$packageName = getArguments(0);
+
+$installCommand = "composer global require {$packageName} --quiet";
+
+$response = Terminal::run($installCommand);
+
+$response->throw();
+
+$json = getComposerJsonFor($packageName);
+
+if (! array_key_exists('bin', $json)) {
+    Terminal::run("composer global remove {$packageName} --quiet");
+
+    throw new Exception('This package does not have any binaries.');
+}
+
+$bin = array_shift($json['bin']);
+$parts = explode('/', $bin);
+$binName = array_pop($parts);
+$arguments = getArguments();
+
+unset($arguments[0]);
+
+$command = implode(' ', [
+    PHP_BINARY,
+    getComposerBinPathFor($binName),
+    implode(' ', $arguments),
+]);
+
+$response = Terminal::run($command);
+
+try {
+    $response->throw();
+} catch (\Throwable $e) {
+    Terminal::run("composer global remove {$packageName} --quiet");
+
+    throw $e;
+}
+
+print $response->output();
+
+Terminal::run("composer global remove {$packageName} --quiet");
+
+
