@@ -1,3 +1,19 @@
 {
-    "name": "cpx/cpx"
+    "name": "cpx/cpx",
+    "description": "Quickly execute Composer package binaries from anywhere.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Chandler",
+            "email": "support@ryangjchandler.co.uk",
+            "homepage": "https://ryangjchandler.co.uk",
+            "role": "Developer"
+        },
+        {
+            "name": "Dan Harrin",
+            "email": "dan@danharrin.com",
+            "homepage": "https://danharrin.com",
+            "role": "Developer"
+        }
+    ]
 }
