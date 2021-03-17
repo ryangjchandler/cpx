@@ -103,7 +103,7 @@ $command = implode(' ', [
     implode(' ', $arguments),
 ]);
 
-$response = Terminal::run($command);
+$response = Terminal::tty(true)->run($command);
 
 try {
     $response->throw();
