@@ -19,5 +19,8 @@
     "require": {
         "composer/composer": "^2.0",
         "titasgailius/terminal": "^1.0"
-    }
+    },
+    "bin": [
+        "./cpx"
+    ]
 }
