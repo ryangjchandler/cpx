@@ -66,7 +66,7 @@ final class Cpx
             Console::info('cpx v'.static::$version.PHP_EOL);
         });
 
-        Console::warning('Quickly execute Composer package binaries locally, globally or from a URL.'.PHP_EOL);
+        Console::warning('Quickly execute local or global Composer package binaries.'.PHP_EOL);
         Console::write('Syntax: cpx [package] <options>'.PHP_EOL);
         Console::write('Example: cpx laravel/installer new my-project-name');
 
