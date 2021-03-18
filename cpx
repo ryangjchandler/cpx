@@ -91,7 +91,9 @@ if (! isInstalledGlobally($packageName)) {
 $json = getComposerJsonFor($packageName);
 
 if (! array_key_exists('bin', $json)) {
-    Terminal::run("composer global remove {$packageName} --quiet");
+    if ($shouldRemovePackageUponCompletion) {
+        removePackage($packageName);
+    }
 
     throw new Exception('This package does not have any binaries.');
 }
