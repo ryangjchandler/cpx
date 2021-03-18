@@ -3,6 +3,7 @@
 namespace Cpx;
 
 use Exception;
+use TitasGailius\Terminal\Terminal;
 
 final class Cpx
 {
