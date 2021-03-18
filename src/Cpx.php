@@ -7,7 +7,7 @@ use TitasGailius\Terminal\Terminal;
 
 final class Cpx
 {
-    private static $version = '0.0.1';
+    private static $version = '0.1.2';
 
     private static $argv = [];
 
