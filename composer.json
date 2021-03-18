@@ -16,6 +16,11 @@
             "role": "Developer"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Cpx\\": "src/"
+        }
+    },
     "require": {
         "composer/composer": "^2.0",
         "titasgailius/terminal": "^1.0"
