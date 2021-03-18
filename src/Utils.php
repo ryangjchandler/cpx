@@ -17,7 +17,7 @@ final class Utils
             throw new Exception('Could not find Composer\'s global directory.');
         }
     
-        return trim($matches[1]).($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return trim($matches[1]).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     public static function localComposerDirectory($path = '')
@@ -28,5 +28,10 @@ final class Utils
     public static function cwd($path = '')
     {
         return getcwd().($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    public static function stringStartsWith(string $subject, string $query)
+    {
+        return substr($subject, 0, strlen($query)) === $query;
     }
 }
