@@ -2,6 +2,7 @@
 
 namespace Cpx;
 
+use Composer\Installer;
 use TitasGailius\Terminal\Terminal;
 
 final class RunPackageBinary
@@ -41,6 +42,18 @@ final class RunPackageBinary
     
     public static function temporary(Package $package)
     {
+        $installed = InstallPackage::execute($package);
 
+        if (! $installed) {
+            Console::error('Something went wrong. Please try again.');
+        }
+
+        RunPackageBinary::global($package);
+
+        $uninstalled = UninstallPackage::execute($package);
+
+        if (! $uninstalled) {
+            Console::error('Something went wrong. Please try again.');
+        }
     }
 }
