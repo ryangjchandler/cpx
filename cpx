@@ -5,16 +5,6 @@ use TitasGailius\Terminal\Terminal;
 
 require_once __DIR__.'/vendor/autoload.php';
 
-function findComposer() {
-    $composerPath = getcwd().'/composer.phar';
-
-    if (file_exists($composerPath)) {
-        return '"'.PHP_BINARY.'" '.$composerPath;
-    }
-
-    return 'composer';
-}
-
 function getArguments($index = null) {
     global $argv;
 
