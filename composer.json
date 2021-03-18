@@ -27,5 +27,8 @@
     },
     "bin": [
         "./cpx"
-    ]
+    ],
+    "require-dev": {
+        "ryangjchandler/puny": "^0.3.1"
+    }
 }
