@@ -2,7 +2,6 @@
 
 namespace Cpx;
 
-use Composer\Installer;
 use TitasGailius\Terminal\Terminal;
 
 final class RunPackageBinary
