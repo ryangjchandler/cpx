@@ -36,6 +36,10 @@ final class RunPackageBinary
 
     public static function remote(Package $package)
     {
+        if (strpos($package->name, 'github.com') === false) {
+            Console::error('You can only execute remote GitHub Gists or repositories.');
+        }
+
         Console::warning('Executing remote binaries is still in development.');
     }
     
